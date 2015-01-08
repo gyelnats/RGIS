@@ -1683,7 +1683,8 @@ DBInt DBImportNetCDF (DBObjData *data,const char *filename)
 				else if (strncmp (timeString,"minute",strlen ("minute")) == 0)
 					sprintf (layerName + strlen (layerName),"-%02d-%02d %02d:%02d",month, day, hour, minute + (second > 30 ? 1 : 0));
 				else
-					sprintf (layerName,"LayerName:%04d",layerID);
+					if(year > 1)
+						sprintf (layerName,"LayerName:%04d",layerID);
 				}
 			else sprintf (layerName,"LayerName:%04d",layerID);
 			}

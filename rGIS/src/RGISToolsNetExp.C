@@ -12,6 +12,7 @@ bfekete@ccny.cuny.edu
 
 #include <ctype.h>
 #include <rgis.H>
+#include <unistd.h>
 
 DBInt DBNetworkExportASCIIGridDir		(DBObjData *,char *);
 DBInt DBNetworkExportASCIIGridBasin		(DBObjData *,char *); 
@@ -45,6 +46,8 @@ int _RGISToolsNetworkExportARCInfo (DBObjData *netData,char *selection)
 	char nodeAttribDef	[FILENAME_MAX]; 
 	char nodeAttribData	[FILENAME_MAX]; 
 	char amlFile    		[FILENAME_MAX]; 
+
+
 
 	sprintf (asciiGridNet,"%s/asciigrid.tmp",selection);
 	if (DBNetworkExportASCIIGridDir (netData,asciiGridNet) == DBFault) return (DBFault);
@@ -202,7 +205,40 @@ int _RGISToolsNetworkExportARCInfo (DBObjData *netData,char *selection)
 		return (DBFault);
 		}
 
-	fprintf (file,"&workspace %s\n",selection);
+        int relative = 1;
+        if(relative == 1) {
+
+        	strcpy(asciiGridNet, basename(asciiGridNet));
+
+       		strcpy(asciiGridBasin, basename(asciiGridBasin));
+
+        	strcpy(asciiGridOrder, basename(asciiGridOrder));
+
+        	strcpy(asciiGridArea, basename(asciiGridArea));
+
+        	strcpy(asciiGridLength, basename(asciiGridLength));
+
+        	strcpy(asciiGridDistToMouth, basename(asciiGridDistToMouth));
+
+        	strcpy(asciiGridDistToOcean, basename(asciiGridDistToOcean));
+
+        	strcpy(arcGenArc, basename(arcGenArc));
+
+        	strcpy(arcGenNode, basename(arcGenNode));
+
+        	strcpy(arcAttribDef, basename(arcAttribDef));
+
+        	strcpy(arcAttribData, basename(arcAttribData));
+
+        	strcpy(nodeAttribDef, basename(nodeAttribDef));
+
+        	strcpy(nodeAttribData, basename(nodeAttribData));
+   
+        } else {
+		fprintf (file,"&workspace %s\n",selection);
+        }
+
+
 	fprintf (file,"asciigrid %s g_network\n",asciiGridNet);
 	fprintf (file,"asciigrid %s g_basin\n",asciiGridBasin);
 	fprintf (file,"asciigrid %s g_order\n",asciiGridOrder);
