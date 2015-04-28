@@ -1673,8 +1673,11 @@ DBInt DBImportNetCDF (DBObjData *data,const char *filename)
 			if (doTimeUnit)
 				{
            	ut_decode_time (cv_convert_double (cvConverter, timeSteps [layerID]), &year, &month, &day, &hour, &minute, &second, &resolution);
+
             if (year > 1) sprintf (layerName,"%04d",year); else sprintf (layerName,"XXXX");
-				if (strncmp (timeString,"month",strlen ("month")) == 0)
+				if (strncmp (timeString,"year",strlen ("year")) == 0)
+					sprintf (layerName,"%04d",year + (month > 6 ? 1 : 0));
+				else if (strncmp (timeString,"month",strlen ("month")) == 0)
 					sprintf (layerName + strlen (layerName),"-%02d",month + (day > 15 ? 1 : 0));
 				else if (strncmp (timeString,"day",strlen ("day")) == 0)
 					sprintf (layerName + strlen (layerName),"-%02d-%02d",month, day + (hour > 12 ? 1 : 0));
@@ -1682,9 +1685,6 @@ DBInt DBImportNetCDF (DBObjData *data,const char *filename)
 					sprintf (layerName + strlen (layerName),"-%02d-%02d %02d",month, day, hour + (minute > 30 ? 1 : 0));
 				else if (strncmp (timeString,"minute",strlen ("minute")) == 0)
 					sprintf (layerName + strlen (layerName),"-%02d-%02d %02d:%02d",month, day, hour, minute + (second > 30 ? 1 : 0));
-				else
-					if(year > 1)
-						sprintf (layerName,"LayerName:%04d",layerID);
 				}
 			else sprintf (layerName,"LayerName:%04d",layerID);
 			}
